@@ -1,32 +1,38 @@
 package reservahotel;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class Quarto {
 	public int numero;
 	public String tipo;
-	public int preco;
+	public double preco;
 	public boolean estaDisponivel;
+	
+    public Quarto() {
+        this.estaDisponivel = true;
+    }
+
+    public Quarto(int numero, String tipo, double preco) {
+        this.numero = numero;
+        this.tipo = tipo;
+        this.preco = preco;
+        this.estaDisponivel = true;
+    }
 
 	public void reservar(Hospede hospede) {
-		if (this.maiorDeDezoito(hospede.nascimento) && estaDisponivel) {
+		if (estaDisponivel) {			
 			estaDisponivel = false;
-			System.out.print("Quarto reservado com sucesso");
+			System.out.print("Quarto " + this.numero + " reservado com sucesso");
+		} else {
+			System.out.print("Quarto " + this.numero + " não está disponível");
 		}
 	}
 	public void cancelarReserva() {
-		estaDisponivel = true;
-		System.out.print("Reserva cancelada com sucesso");
+		if (!estaDisponivel) {			
+			estaDisponivel = false;
+			System.out.print("Reserva do Quarto " + this.numero + " cancelada com sucesso");
+		} else {
+			System.out.print("Quarto " + this.numero + " já está disponível");
+		}
 	}
-    private boolean maiorDeDezoito(String dataNascimento) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate nascimento = LocalDate.parse(dataNascimento, formatter);
-        LocalDate hoje = LocalDate.now();
-
-        long anos = ChronoUnit.YEARS.between(nascimento, hoje);
-        return anos >= 18;
-    }
 	public boolean estaDisponivel() {
 		return estaDisponivel;
 	}
@@ -45,10 +51,10 @@ public class Quarto {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	public int getPreco() {
+	public double getPreco() {
 		return preco;
 	}
-	public void setPreco(int preco) {
+	public void setPreco(double preco) {
 		this.preco = preco;
 	}
 }
